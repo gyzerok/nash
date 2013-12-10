@@ -11,6 +11,10 @@ namespace ImageParser
     class AnchorPlacer
     {
         Form1 Parent;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a8e84463883e051a5d56569a33419bd3221d72cc
         public Rectangle rect = new Rectangle(650, 460, 15, 40);
         public Rectangle rect2 = new Rectangle(671, 465, 15, 40);
         public Rectangle flopRect1 = new Rectangle(533, 227, 15, 40);

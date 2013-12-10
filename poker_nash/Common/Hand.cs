@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bot
+namespace common
 {
-    public interface IBot
+    public class Hand
     {
-        void Process();
+        public List<Card> Cards;
     }
 }

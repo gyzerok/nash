@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using common;
 
-namespace bot
+namespace common
 {
-    public interface IBot
+    public class State
     {
-        void Process();
+        public Board Board { get; set; }
+        public Hand Hand { get; set; }
     }
 }

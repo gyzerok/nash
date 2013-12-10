@@ -28,7 +28,7 @@ namespace ImageParser
         private void Form1_Load(object sender, EventArgs e)
         {
             aPlacer = new AnchorPlacer(this);
-            cards = Read(@"D:\dev\nash\ImageParser\bin\Debug\saved");
+            cards = Read("saved");
             Timer t = new Timer();
             t.Interval = 20;
             t.Tick += new EventHandler(t_Tick);

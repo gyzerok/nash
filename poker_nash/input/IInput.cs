@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using common;
+
 namespace input
 {
-    interface IInput
+    public interface IInput
     {
-        void GetState();
+        State GetState();
+        bool Ready();
     }
 }

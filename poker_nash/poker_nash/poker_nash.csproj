@@ -44,12 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -73,6 +74,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bot\bot.csproj">
+      <Project>{a5fe8dc6-e72a-4e69-9217-289e568be34c}</Project>
+      <Name>bot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\common.csproj">
+      <Project>{6407267c-4df7-4679-90d7-0ac9c07012fa}</Project>
+      <Name>common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\input\input.csproj">
+      <Project>{7f595207-3c7d-4b18-8380-6c8a3abaa25b}</Project>
+      <Name>input</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\output\output.csproj">
+      <Project>{400033ef-601a-4e41-b3ab-cadfad1a7516}</Project>
+      <Name>output</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
