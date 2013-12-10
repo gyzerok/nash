@@ -28,7 +28,7 @@ namespace ImageParser
         private void Form1_Load(object sender, EventArgs e)
         {
             aPlacer = new AnchorPlacer(this);
-            cards = Read(@"C:\Users\Джордж\Documents\Visual Studio 2012\Projects\ImageParser\ImageParser\bin\Debug\saved");
+            cards = Read(@"D:\dev\nash\ImageParser\bin\Debug\saved");
             Timer t = new Timer();
             t.Interval = 20;
             t.Tick += new EventHandler(t_Tick);
@@ -94,7 +94,7 @@ namespace ImageParser
                 this.pictureBox7.Image = temp;
             }
             label3.Text = tempString;
-            
+
         }
 
         void t_Tick(object sender, EventArgs e)
@@ -142,7 +142,7 @@ namespace ImageParser
         public void CardRecognition(Bitmap card)
         {
             string hash = GetHash(card); 
-            if ((!cards.ContainsKey(hash))&&(card.GetPixel(0,0)==Color.FromArgb(255,255,255,255)))
+            if ((!cards.ContainsKey(hash))&&(card.GetPixel(0,0) == Color.FromArgb(255,255,255,255)))
             {
                 inputBox = new InputBox(this, card);
             }

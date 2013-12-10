@@ -12,13 +12,13 @@ namespace ImageParser
     {
         List<Point> Anchors;
         Form1 Parent;
-        public Rectangle rect = new Rectangle(650, 460, 15, 40);
-        public Rectangle rect2 = new Rectangle(671, 465, 15, 40);
-        public Rectangle flopRect1 = new Rectangle(533, 227, 15, 40);
-        public Rectangle flopRect2 = new Rectangle(598, 227, 15, 40);
-        public Rectangle flopRect3 = new Rectangle(663, 227, 15, 40);
-        public Rectangle turnRect = new Rectangle(728, 227, 15, 40);
-        public Rectangle riverRect = new Rectangle(793, 227, 15, 40);
+        public Rectangle rect = new Rectangle(650, 461, 15, 40);
+        public Rectangle rect2 = new Rectangle(671, 466, 15, 40);
+        public Rectangle flopRect1 = new Rectangle(533, 228, 15, 40);
+        public Rectangle flopRect2 = new Rectangle(598, 228, 15, 40);
+        public Rectangle flopRect3 = new Rectangle(663, 228, 15, 40);
+        public Rectangle turnRect = new Rectangle(728, 228, 15, 40);
+        public Rectangle riverRect = new Rectangle(793, 228, 15, 40);
 
         public AnchorPlacer(Form1 parent)
         {
