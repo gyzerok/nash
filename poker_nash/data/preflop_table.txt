@@ -1,16 +1,16 @@
-AA KK QQ AK
+AAs KKs QQs AKs AKo
 3 3 3 3
 3 3 3 3
 3 3 3 3
-JJ TT
+JJo TTo
 3 3 3 3
 3 3 3 3
 5 5 5 5
-99 88 77 66 55 44 33 22
+99o 88o 77o 66o 55o 44o 33o 22o
 1 4 3 4
 1 4 4 4
 5 5 5 5
-AQ AJ AT
+AQs AJs ATs AQo AJo ATo
 1 3 3 3
 1 1 3 4
 1 1 1 1

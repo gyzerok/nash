@@ -12,7 +12,8 @@ namespace bot
 {
     public class BSSBot : IBot
     {
-        private Dictionary<List<string>, List<int>> preflopTable;
+        private Dictionary<List<string>, List<List<int>>> preflopTable;
+        private State state;
 
         public BSSBot()
         {
@@ -21,7 +22,7 @@ namespace bot
             string line;
             while ((line = sr.ReadLine()) != null)
             {
-                var actions = new List<int>();
+                var actions = new List<List<int>>();
                 string tmpLine;
                 for (int i = 0; i < 3; i++)
                 {
@@ -36,8 +37,28 @@ namespace bot
 
         public Activity Process(State state)
         {
+            this.state = state;
+
+            var subTable = this.GetSubtable();
 
             return null;
+        }
+
+        private List<int> GetSubtable()
+        {
+            string hand = this.state.Hand.ToString();
+
+            return this.preflopTable.Select(n => (n.Key.Contains(hand)) ? n.Value : null).ElementAt(0);
+        }
+
+        private Activity GetActivity()
+        {
+            
+        }
+
+        private Position GetPosition()
+        {
+            
         }
     }
 }
