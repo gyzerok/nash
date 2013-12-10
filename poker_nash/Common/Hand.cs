@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using common;
-
-namespace input
+namespace common
 {
-    public interface IInput
+    public class Hand
     {
-        State GetState();
+        public List<Card> Cards;
     }
 }

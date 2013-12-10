@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using common;
 
-namespace input
+namespace common
 {
-    public interface IInput
+    public class State
     {
-        State GetState();
+        public Board Board { get; set; }
+        public Hand Hand { get; set; }
     }
 }

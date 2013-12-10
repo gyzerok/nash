@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bot
 {
-    interface IBot
+    public interface IBot
     {
         void Process();
     }

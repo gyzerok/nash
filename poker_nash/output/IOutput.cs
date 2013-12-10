@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using common;
+
 namespace output
 {
-    interface IOutput
+    public interface IOutput
     {
-        void Act();
+        void Act(common.Action action);
     }
 }
