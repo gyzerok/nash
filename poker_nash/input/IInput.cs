@@ -11,5 +11,6 @@ namespace input
     public interface IInput
     {
         State GetState();
+        bool Ready();
     }
 }

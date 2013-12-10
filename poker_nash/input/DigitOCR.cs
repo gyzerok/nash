@@ -19,7 +19,7 @@ namespace input
             ocr.Init(null, "eng", false);
             List<Word> result = ocr.DoOCR(bmp, Rectangle.Empty);
 
-            return Convert.ToDouble(result[0].Text);
+            return Convert.ToDouble(result[0].Text.Replace("$", ""));
         }
     }
 }
