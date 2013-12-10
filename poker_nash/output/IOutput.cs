@@ -10,6 +10,6 @@ namespace output
 {
     public interface IOutput
     {
-        void Act(common.Action action);
+        void Act(common.Activity action);
     }
 }
