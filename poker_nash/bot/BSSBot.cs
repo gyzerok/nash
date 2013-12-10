@@ -44,7 +44,7 @@ namespace bot
             return null;
         }
 
-        private List<int> GetSubtable()
+        private List<List<int>> GetSubtable()
         {
             string hand = this.state.Hand.ToString();
 
