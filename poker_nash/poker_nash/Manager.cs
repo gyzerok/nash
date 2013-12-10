@@ -26,7 +26,11 @@ namespace poker_nash
 
         public void Run()
         {
-            
+            var input = this.input.GetState();
+
+            var activity = this.bot.Process(input);
+
+            this.output.Act(activity);
         }
     }
 }
