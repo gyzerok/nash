@@ -44,7 +44,7 @@ namespace common
             }
         }
 
-        public Board(int dealer, List<Card> cards, List<Player> players, int bank)
+        public Board(int dealer, List<Card> cards, List<Player> players, int bank=0)
         {
             this.Dealer = dealer;
             this.Cards = cards;

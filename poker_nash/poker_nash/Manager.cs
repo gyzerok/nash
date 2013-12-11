@@ -8,6 +8,7 @@ using common;
 using input;
 using bot;
 using output;
+using System.Threading;
 
 namespace poker_nash
 {
@@ -16,6 +17,7 @@ namespace poker_nash
         private IInput input;
         private IOutput output;
         private IBot bot;
+        private Timer timer;
 
         public Manager(IInput input, IOutput output, IBot bot)
         {
@@ -24,13 +26,18 @@ namespace poker_nash
             this.bot = bot;
         }
 
-        public void Run()
+        private void Step(Object state)
         {
             var input = this.input.GetState();
 
             var activity = this.bot.Process(input);
 
             this.output.Act(activity);
+        }
+
+        public void Start()
+        {
+            this.timer = new Timer(this.Step, null, 1000, Timeout.Infinite); 
         }
     }
 }
