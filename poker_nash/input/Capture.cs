@@ -15,13 +15,49 @@ namespace input
     {
         private Bitmap imageState;
         private Dictionary<string, string> cards = new Dictionary<string, string>();
-        private List<Point> dealerCoords = new List<Point>();
+        private List<Point> cardsCoords = new List<Point>()
+        {
+            new Point(417,400),
+            new Point(330,308),
+            new Point(424,193),
+            new Point(503,160),
+            new Point(877,169),
+            new Point(957,195),
+            new Point(1050,309),
+            new Point(944,408),
+        };
+
+        private List<Point> dealerCoords = new List<Point>()
+        {
+            new Point(672,434),
+            new Point(484,436),
+            new Point(325,344),
+            new Point(351,220),
+            new Point(534,148),
+            new Point(838,147),
+            new Point(1015,221),
+            new Point(1033,340),
+            new Point(886,436),
+        };
         private List<Point> handsCoords = new List<Point>();
         private int dealerPos;
 
+        private List<Rectangle> dealerRects = new List<Rectangle>()
+        {
+            new Rectangle(661,425,30,25),
+            new Rectangle(475,427,30,25),
+            new Rectangle(316,334,30,25),
+            new Rectangle(340,212,30,25),
+            new Rectangle(522,140,30,25),
+            new Rectangle(826,140,30,25),
+            new Rectangle(1002,213,30,25),
+            new Rectangle(1022,332,30,25),
+            new Rectangle(874,428,30,25),
+        };
+
         public State GetState()
         {
-
+            Dealer();
             return null;
         }
 
@@ -67,17 +103,36 @@ namespace input
         //Method that detects dealer on the table
         private void Dealer()
         {
-            Point value;
+            Rectangle value;
             Color dealerColor = Color.FromArgb(255, 169, 23, 13);
-            for (int i = 0; i < dealerCoords.Count; i++)
+
+            for (int i = 0; i < dealerRects.Count; i++)
             {
-                value = dealerCoords[i];
-                if (imageState.GetPixel(value.X, value.Y) == dealerColor)
+                value = dealerRects[i];
+                for (int j = 0; j < value.Width; j++)
                 {
-                    this.dealerPos = i;
-                    break;
+                    for (int k = 0; k < value.Height; k++)
+                    {
+                        if (ImageProcessor.PrintScreen(value).GetPixel(j, k) == dealerColor)
+                        {
+                            dealer = i;
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) break;
                 }
+                if (flag) break;
             }
+        }
+
+        private void GetDealer()
+        {
+            Rectangle value;
+            bool flag = false;
+            aPlacer.Snapshot();
+            
+            label4.Text = dealer.ToString();
         }
 
         private int NumberOfPlayersAfter(int dealerPos)
@@ -127,10 +182,7 @@ namespace input
             }
             return image;
         }
-        //AnchorPlacer aPlacer;
         
-        //InputBox inputBox;
-
         //public Rectangle rect = new Rectangle(650, 460, 15, 40);
         //public Rectangle rect2 = new Rectangle(671, 465, 15, 40);
         //public Rectangle flopRect1 = new Rectangle(533, 227, 15, 40);
