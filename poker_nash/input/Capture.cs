@@ -16,9 +16,12 @@ namespace input
         private Bitmap imageState;
         private Dictionary<string, string> cards = new Dictionary<string, string>();
         private List<Point> dealerCoords = new List<Point>();
+        private List<Point> handsCoords = new List<Point>();
+        private int dealerPos;
 
         public State GetState()
         {
+
             return null;
         }
 
@@ -71,11 +74,59 @@ namespace input
                 value = dealerCoords[i];
                 if (imageState.GetPixel(value.X, value.Y) == dealerColor)
                 {
-                    
+                    this.dealerPos = i;
+                    break;
                 }
             }
         }
 
+        private int NumberOfPlayersAfter(int dealerPos)
+        {
+            int result = 0;
+            Point value;
+            Color handColor = Color.FromArgb(255, 247, 219, 219);
+            for (int i = 1; i < dealerPos; i++)
+            {
+                value = handsCoords[i];
+                if (imageState.GetPixel(value.X, value.Y) == handColor)
+                {
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        private Bitmap DetectBet(Bitmap image)
+        {
+            int minX, maxX, minY, maxY;
+            minX = image.Width;
+            maxX = 0;
+            minY = image.Height;
+            maxY = 0;
+            for (int i = 0; i < image.Height; i++)
+            {
+                for (int j = 0; j < image.Width; j++)
+                {
+                    if (image.GetPixel(j, i) == Color.FromArgb(255, 255, 246, 207))
+                    {
+                        minX = Math.Min(minX, j);
+                        maxX = Math.Max(maxX, j);
+                        minY = Math.Min(minY, i);
+                        maxY = Math.Max(maxY, i);
+                        //image.SetPixel(i, j, Color.Black);
+                    }
+                }
+            }
+            if (minX < maxX)
+            {
+                minX--;
+                minY--;
+                maxY += 2;
+                maxX += 2;
+                return image.Clone(new Rectangle(minX, minY, maxX - minX, maxY - minY), PixelFormat.DontCare);
+            }
+            return image;
+        }
         //AnchorPlacer aPlacer;
         
         //InputBox inputBox;
@@ -184,38 +235,7 @@ namespace input
 
         //}
 
-        //public Bitmap DetectBet(Bitmap image)
-        //{
-        //    int minX, maxX, minY, maxY;
-        //    minX = image.Width;
-        //    maxX = 0;
-        //    minY = image.Height;
-        //    maxY = 0;
-        //    for (int i = 0; i < image.Height; i++)
-        //    {
-        //        for (int j = 0; j < image.Width; j++)
-        //        {
-        //            if (image.GetPixel(j,i) == Color.FromArgb(255, 255, 246, 207))
-        //            {
-        //                minX = Math.Min(minX, j);
-        //                maxX = Math.Max(maxX, j);
-        //                minY = Math.Min(minY, i);
-        //                maxY = Math.Max(maxY, i);
-        //                //image.SetPixel(i, j, Color.Black);
-        //            }
-        //        }
-        //    }
-        //    if (minX < maxX)
-        //    {
-        //        minX--;
-        //        minY--;
-        //        maxY+=2;
-        //        maxX+=2;
-        //        return image.Clone(new Rectangle(minX,minY,maxX-minX, maxY-minY), PixelFormat.DontCare);
-        //    }
-        //    else
-        //        return image;
-        //}
+        
 
         //void t_Tick(object sender, EventArgs e)
         //{

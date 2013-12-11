@@ -18,7 +18,7 @@ namespace common
     {
         public int Dealer { get; set; }
         public List<Card> Cards { get; set; }
-        public List<double> Bets { get; set; }
+        public List<Player> Players { get; set; }
         public int Bank { get; set; }
         public Street Street { get; set; }
     }
