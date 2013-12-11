@@ -106,7 +106,7 @@ namespace common
                 case 'T':
                     card.Value = Value._T;
                     break;
-                case 'J:
+                case 'J':
                     card.Value = Value._J;
                     break;
                 case 'Q':

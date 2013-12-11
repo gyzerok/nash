@@ -11,5 +11,10 @@ namespace common
     {
         public Board Board { get; set; }
         public Hand Hand { get; set; }
+        public State(Board board, Hand hand)
+        {
+            this.Board = board;
+            this.Hand = hand;
+        }
     }
 }

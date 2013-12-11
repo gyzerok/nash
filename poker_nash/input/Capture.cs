@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Security.Cryptography;
 
 using common;
 
@@ -17,6 +18,19 @@ namespace input
         private int dealerPos;
         private Dictionary<string, string> cards = new Dictionary<string, string>();
         private List<Player> players = new List<Player>();
+        private List<Card> boardCards = new List<Card>();
+        private State currentState;
+        private Hand hand;
+        private Color readyPixel = Color.FromArgb(255, 178, 195, 205);
+        private Point readyPos = new Point(729, 672);
+
+        private Rectangle handRect1 = new Rectangle(650, 460, 15, 40);
+        private Rectangle handRect2 = new Rectangle(671, 465, 15, 40);
+        private Rectangle flopRect1 = new Rectangle(533, 227, 15, 40);
+        private Rectangle flopRect2 = new Rectangle(598, 227, 15, 40);
+        private Rectangle flopRect3 = new Rectangle(663, 227, 15, 40);
+        private Rectangle turnRect = new Rectangle(728, 227, 15, 40);
+        private Rectangle riverRect = new Rectangle(793, 227, 15, 40);
 
         private List<Rectangle> betsRects = new List<Rectangle>()
         {
@@ -61,7 +75,9 @@ namespace input
             this.imageState = ImageProcessor.Snapshot();
             Dealer();
             Bets();
-            return null;
+            Cards();
+            currentState = new State(new Board(this.dealerPos, this.boardCards, this.players), this.hand);
+            return currentState;
         }
 
         //Loads data
@@ -88,13 +104,46 @@ namespace input
         //Returns TRUE if it is your turn on board
         public bool Ready()
         {
-            return true;
+            imageState = ImageProcessor.Snapshot();
+            Bitmap targetBitmap = ImageProcessor.Crop(imageState, new Rectangle(readyPos,new Size(1,1)));
+            if (targetBitmap.GetPixel(0, 0) == readyPixel)
+            {
+                return true;
+            }
+            return false;
         }
 
         //Method that recognizes cards on board
         private void Cards()
         {
-            
+            //Getting hand
+            Bitmap handBitmap1, handBitmap2;
+            handBitmap1 = ImageProcessor.Crop(imageState, handRect1);
+            handBitmap2 = ImageProcessor.Crop(imageState, handRect2);
+            this.hand = new Hand(Card.FromString(cards[GetHash(handBitmap1)]), Card.FromString(cards[GetHash(handBitmap2)]));
+            //Getting flop
+            Bitmap flopBitmap1, flopBitmap2, flopBitmap3;
+            flopBitmap1 = ImageProcessor.Crop(imageState, flopRect1);
+            flopBitmap2 = ImageProcessor.Crop(imageState, flopRect2);
+            flopBitmap3 = ImageProcessor.Crop(imageState, flopRect3);
+            if (cards.ContainsKey(GetHash(flopBitmap1)))
+            {
+                boardCards.Add(Card.FromString(cards[GetHash(flopBitmap1)]));
+                boardCards.Add(Card.FromString(cards[GetHash(flopBitmap2)]));
+                boardCards.Add(Card.FromString(cards[GetHash(flopBitmap3)]));
+            }
+            //Getting later streets
+            Bitmap turnBitmap, riverBitmap;
+            turnBitmap = ImageProcessor.Crop(imageState, turnRect);
+            if (cards.ContainsKey(GetHash(turnBitmap)))
+            {
+                boardCards.Add(Card.FromString(cards[GetHash(turnBitmap)]));
+            }
+            riverBitmap = ImageProcessor.Crop(imageState, riverRect);
+            if (cards.ContainsKey(GetHash(riverBitmap)))
+            {
+                boardCards.Add(Card.FromString(cards[GetHash(riverBitmap)]));
+            }
         }
 
         //Method that recognizes bank and bets on table
@@ -145,23 +194,27 @@ namespace input
             }
         }
 
-        private int NumberOfPlayersAfter(int dealerPos)
+        private static string GetHash(Bitmap image)
         {
-            int result = 0;
-            Point value;
-            Color handColor = Color.FromArgb(255, 247, 219, 219);
-            return result;
+            // get the bytes from the image
+            byte[] bytes = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Bmp); // gif for example
+                bytes = ms.ToArray();
+            }
+            // hash the bytes
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] hash = md5.ComputeHash(bytes);
+            string temp = "";
+            foreach (byte value in hash)
+            {
+                temp += value.ToString();
+            }
+            return temp;
         }
 
-        //public Rectangle rect = new Rectangle(650, 460, 15, 40);
-        //public Rectangle rect2 = new Rectangle(671, 465, 15, 40);
-        //public Rectangle flopRect1 = new Rectangle(533, 227, 15, 40);
-        //public Rectangle flopRect2 = new Rectangle(598, 227, 15, 40);
-        //public Rectangle flopRect3 = new Rectangle(663, 227, 15, 40);
-        //public Rectangle turnRect = new Rectangle(728, 227, 15, 40);
-        //public Rectangle riverRect = new Rectangle(793, 227, 15, 40);
-        //public Rectangle betRect1 = new Rectangle(500, 185, 120,35);
-
+        
         //public AnchorPlacer(Form1 parent)
         //{
         //    this.Parent = parent;
@@ -359,25 +412,7 @@ namespace input
         //    return result;
         //}
 
-        //private static string GetHash(Bitmap image)
-        //{
-        //    // get the bytes from the image
-        //    byte[] bytes = null;
-        //    using (MemoryStream ms = new MemoryStream())
-        //    {
-        //        image.Save(ms, ImageFormat.Bmp); // gif for example
-        //        bytes = ms.ToArray();
-        //    }
-        //    // hash the bytes
-        //    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-        //    byte[] hash = md5.ComputeHash(bytes);
-        //    string temp = "";
-        //    foreach (byte value in hash)
-        //    {
-        //        temp += value.ToString();
-        //    }
-        //    return temp;
-        //}
+        
 
         //private void button1_Click(object sender, EventArgs e)
         //{
