@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 
 using common;
 
@@ -14,14 +15,11 @@ namespace output
     {        	
         private const UInt32 MOUSEEVENTF_LEFTDOWN = 0x0002;
         private const UInt32 MOUSEEVENTF_LEFTUP = 0x0004;
-        private Dictionary<Decision, Point> buttons;
         private Random rnd;
 
         public Emulate()
         {
             this.rnd = new Random();
-            this.buttons.Clear();
-            this.buttons.Add(Decision.Fold, new Point());
         }
 
         public void Act(Activity activity)
@@ -49,6 +47,7 @@ namespace output
 
         private void Click(Point point)
         {
+            Cursor.Position = point;
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, new IntPtr());
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, new IntPtr());
         }

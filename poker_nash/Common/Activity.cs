@@ -20,7 +20,13 @@ namespace common
     {
         private int bet;
 
-        public Decision Type { get; set; }
+        public Activity(Decision decision, int bet = 0)
+        {
+            this.Type = decision;
+            this.Bet = bet;
+        }
+
+        public Decision Type { get; private set; }
         public int Bet 
         {
             get
@@ -28,7 +34,7 @@ namespace common
                 if (this.Type != Decision.Raise) return -1;
                 return this.bet;
             }
-            set
+            private set
             {
                  this.bet = value;
             }

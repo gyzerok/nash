@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using common;
+using output;
+
 namespace poker_nash
 {
     public partial class MainForm : Form
@@ -15,6 +18,11 @@ namespace poker_nash
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        private void Space(object sender, KeyEventArgs e)
+        {
+            
         }
     }
 }

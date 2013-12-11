@@ -27,7 +27,7 @@ namespace bot
                 for (int i = 0; i < 3; i++)
                 {
                     tmpLine = sr.ReadLine();
-                    actions = tmpLine.Split(' ').Select(n => int.Parse(n)).ToList();
+                    //actions = tmpLine.Split(' ').Select(n => int.Parse(n)).ToList();
                     this.preflopTable.Add(line.Split(' ').ToList(), actions);
                 }
             }
@@ -39,7 +39,32 @@ namespace bot
         {
             this.state = state;
 
-            var subTable = this.GetSubtable();
+            if (this.state.Board.Street == Street.Preflop)
+            {
+                var subTable = this.GetSubtable();
+
+                var decision = this.GetDecision();
+
+                int i = 0;
+                switch (decision)
+                {
+                    case Decision.Fold:
+                        i = 0;
+                        break;
+                    case Decision.Call:
+                        i = 1;
+                        break;
+                    case Decision.Raise:
+                        i = 2;
+                        break;
+                }
+
+                var strTable = subTable[i];
+
+                decision = (Decision) strTable[(int) this.GetPosition() - 1];
+
+                return new Activity(decision);
+            }
 
             return null;
         }
@@ -51,14 +76,35 @@ namespace bot
             return this.preflopTable.Select(n => (n.Key.Contains(hand)) ? n.Value : null).ElementAt(0);
         }
 
-        private Activity GetActivity()
+        private Decision GetDecision()
         {
-            
+            var decision = Decision.Fold;
+
+            for (int i = this.state.Board.Players.Count; i > 1; i++)
+            {
+                if (this.state.Board.Players[i].Activity.Bet > 0.02)
+                {
+                    decision = Decision.Raise;
+                    break;
+                }
+
+                if (this.state.Board.Players[i].Activity.Bet == 0.02)
+                {
+                    decision = Decision.Call;
+                    break;
+                }
+            }
+
+            return decision;
         }
 
         private Position GetPosition()
         {
-            
+            if (this.state.Board.Dealer == this.state.Board.Players.Count - 1 ||
+                this.state.Board.Dealer == this.state.Board.Players.Count - 2)
+                return Position.Blind;
+
+
         }
     }
 }

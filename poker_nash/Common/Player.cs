@@ -6,12 +6,25 @@ using System.Threading.Tasks;
 
 namespace common
 {
+    public enum PreflopPosition
+    {
+        BB = 1,
+        SB,
+        D,
+        CO,
+        MP3,
+        MP2,
+        MP1,
+        UTG2,
+        UTG1,
+    }
+
     public enum Position
     {
-        Blind = 1,
-        Early,
+        Early = 1,
         Middle,
         Late,
+        Blind,
     }
 
     public class Player

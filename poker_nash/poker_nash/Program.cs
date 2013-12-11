@@ -28,7 +28,7 @@ namespace poker_nash
             var bot = new BSSBot();
 
             var manager = new Manager(input, output, bot);
-            manager.Run();
+            manager.Run();            
         }
     }
 }
