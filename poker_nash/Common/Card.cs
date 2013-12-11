@@ -72,5 +72,71 @@ namespace common
                     return "";
             }
         }
+
+        public static Card FromString(string str)
+        {
+            var card = new Card();
+
+            switch (str[0])
+            {
+                case '2':
+                    card.Value = Value._2;
+                    break;
+                case '3':
+                    card.Value = Value._3;
+                    break;
+                case '4':
+                    card.Value = Value._4;
+                    break;
+                case '5':
+                    card.Value = Value._5;
+                    break;
+                case '6':
+                    card.Value = Value._6;
+                    break;
+                case '7':
+                    card.Value = Value._7;
+                    break;
+                case '8':
+                    card.Value = Value._8;
+                    break;
+                case '9':
+                    card.Value = Value._9;
+                    break;
+                case 'T':
+                    card.Value = Value._T;
+                    break;
+                case 'J:
+                    card.Value = Value._J;
+                    break;
+                case 'Q':
+                    card.Value = Value._Q;
+                    break;
+                case 'K':
+                    card.Value = Value._K;
+                    break;
+                default:
+                    card.Value = Value._A;
+                    break;
+            }
+
+            switch (str[1])
+            {
+                case 's':
+                    card.Suit = Suit.S;
+                    break;
+                case 'c':
+                    card.Suit = Suit.C;
+                    break;
+                case 'd':
+                    card.Suit = Suit.D;
+                    break;
+                default:
+                    card.Suit = Suit.H;
+                    break;
+            }
+
+            return card;
+        }
     }
 }
