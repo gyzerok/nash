@@ -14,12 +14,15 @@ namespace input
     {
         public static double Recognize(Bitmap bmp)
         {
-            var ocr = new Tesseract();
-            ocr.SetVariable("tessedit_char_whitelist", "0123456789,$");
-            ocr.Init(null, "eng", false);
-            List<Word> result = ocr.DoOCR(bmp, Rectangle.Empty);
-
-            return Convert.ToDouble(result[0].Text.Replace("$", ""));
+            using (var ocr = new tessnet2.Tesseract())
+            {
+                ocr.Init(null, "eng", false);
+                ocr.SetVariable("tessedit_char_whitelist", "0123456789,$");
+                ocr.Init(null, "eng", false);
+                List<Word> result = ocr.DoOCR(bmp, Rectangle.Empty);
+                return Convert.ToDouble(result[0].Text.Replace("$", ""));
+                //var ocr = new Tesseract();
+            }
         }
     }
 }

@@ -36,15 +36,15 @@ namespace input
 
         private List<Rectangle> betsRects = new List<Rectangle>()
         {
-            new Rectangle(614,391,80,20),
-            new Rectangle(455,400,80,20),
-            new Rectangle(379,316,80,20),
-            new Rectangle(402,230,80,20),
-            new Rectangle(527,194,80,20),
-            new Rectangle(749,190,80,20),
-            new Rectangle(831,234,80,20),
-            new Rectangle(877,307,80,20),
-            new Rectangle(763,395,80,20),
+            new Rectangle(614,391,80,35),
+            new Rectangle(455,400,80,35),
+            new Rectangle(379,316,80,35),
+            new Rectangle(402,230,80,35),
+            new Rectangle(527,194,80,35),
+            new Rectangle(749,190,80,35),
+            new Rectangle(831,234,80,35),
+            new Rectangle(877,307,80,35),
+            new Rectangle(763,395,80,35),
         };
 
         private List<Rectangle> handsRects = new List<Rectangle>()
