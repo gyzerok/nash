@@ -32,10 +32,13 @@ namespace common
         public int Bank { get; set; }
         public Activity Activity { get; set; }
 
-        public Player(Activity activity)
+        public bool Dealer { get; private set; }
+
+        public Player(Activity activity, bool dealer=false)
         {
             this.Activity = activity;
             this.Bank = 0;
+            this.Dealer = dealer;
         }
     }
 }

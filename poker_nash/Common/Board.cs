@@ -51,5 +51,12 @@ namespace common
             this.Players = players;
             this.Bank = bank;
         }
+
+        public int RightOf(int index)
+        {
+            if (index == 0) return this.Players.Count - 1;
+
+            return index - 1;
+        }
     }
 }

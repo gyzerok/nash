@@ -15,6 +15,7 @@ namespace input
     public class Capture : IInput
     {
         private Bitmap imageState;
+        private int absoluteDealerPos;
         private int dealerPos;
         private Dictionary<string, string> cards = new Dictionary<string, string>();
         private List<Player> players = new List<Player>();
@@ -22,6 +23,7 @@ namespace input
         private State currentState;
         private Hand hand;
         private Color readyPixel = Color.FromArgb(255, 178, 195, 205);
+        private Color handPixel = Color.FromArgb(255, 160, 73, 70);
         private Point readyPos = new Point(729, 672);
 
         private Rectangle handRect1 = new Rectangle(650, 460, 15, 40);
@@ -72,6 +74,7 @@ namespace input
 
         public State GetState()
         {
+            LoadConfig();
             this.imageState = ImageProcessor.Snapshot();
             Dealer();
             Bets();
@@ -150,19 +153,51 @@ namespace input
         private void Bets()
         {
             Rectangle value;
+            Rectangle cardsRect;
             Bitmap targetBitmap;
             double recognizedValue;
-            for (int i = 0; i < betsRects.Count; i++)
+            int j = 1;
+            bool flag;
+            value = betsRects[0];
+            targetBitmap = ImageProcessor.Crop(imageState, value);
+            targetBitmap = ImageProcessor.DetectBet(targetBitmap);
+            recognizedValue = DigitOcr.Recognize(targetBitmap);
+            this.players.Add(new Player(new Activity(Decision.Unknown, recognizedValue), 0 == this.absoluteDealerPos));
+            for (int i = 1; i < betsRects.Count; i++)
             {
                 value = betsRects[i];
-                
+                cardsRect = handsRects[j];
                 targetBitmap = ImageProcessor.Crop(imageState, value);
                 targetBitmap = ImageProcessor.DetectBet(targetBitmap);
                 if (targetBitmap != null)
                 {
                     recognizedValue = DigitOcr.Recognize(targetBitmap);
-                    this.players.Add(new Player(new Activity(Decision.Unknown, recognizedValue)));
+                    if (this.absoluteDealerPos == i)
+                    {
+                        this.dealerPos = this.players.Count;
+                    }
+                    this.players.Add(new Player(new Activity(Decision.Unknown, recognizedValue), i == this.absoluteDealerPos));
+                    break;
                 }
+                targetBitmap = ImageProcessor.Crop(imageState, cardsRect);
+                for (int k = 0; k < value.Width; k++)
+                {
+                    flag = false;
+                    for (int t = 0; t < value.Height; t++)
+                    {
+                        if (targetBitmap.GetPixel(k, t) == handPixel)
+                        {
+                            if (this.absoluteDealerPos == i)
+                            {
+                                this.dealerPos = this.players.Count;
+                            }
+                            this.players.Add(new Player(new Activity(Decision.Unknown), i == this.absoluteDealerPos));
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) break;
+                } 
             }
         }
 
@@ -183,7 +218,7 @@ namespace input
                     {
                         if (targetBitmap.GetPixel(j, k) == dealerColor)
                         {
-                            dealerPos = i;
+                            absoluteDealerPos = i;
                             flag = true;
                             break;
                         }

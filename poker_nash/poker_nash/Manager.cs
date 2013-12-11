@@ -28,14 +28,17 @@ namespace poker_nash
 
         private void Step(Object state)
         {
-            var input = this.input.GetState();
+            if (this.input.Ready())
+            {
+                var input = this.input.GetState();
 
-            var activity = this.bot.Process(input);
+                var activity = this.bot.Process(input);
 
-            this.output.Act(activity);
+                this.output.Act(activity);
+            }
         }
 
-        public void Start()
+        public void Run()
         {
             this.timer = new Timer(this.Step, null, 1000, Timeout.Infinite); 
         }

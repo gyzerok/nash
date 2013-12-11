@@ -17,7 +17,7 @@ namespace bot
 
         public BSSBot()
         {
-            var sr = new StreamReader("preflop_table");
+            var sr = new StreamReader(@"C:\Users\Джордж\Documents\Visual Studio 2012\Projects\nash\poker_nash\bot\bin\Debug\preflop_table.txt");
 
             string line;
             while ((line = sr.ReadLine()) != null)
@@ -104,7 +104,32 @@ namespace bot
                 this.state.Board.Dealer == this.state.Board.Players.Count - 2)
                 return Position.Blind;
 
+            var positions = new List<int>();
+            positions.Add(2);
+            positions.Add(3);
+            positions.Add(2);
 
+            int minus = 9 - this.state.Board.Players.Count;
+            int i = 0;
+            while (minus > 0)
+            {
+                positions[0]--;
+                minus--;
+
+                if (positions[0] == 0) i++;
+            }
+
+            i = this.state.Board.Dealer;
+            while (positions[i] != 0)
+            {
+                if (i == 0) return (Position)(positions.Count - 1);
+
+                positions[positions.Count - 1]--;
+                if (positions[positions.Count - 1] == 0) positions.RemoveAt(positions.Count - 1);
+                i = this.state.Board.RightOf(i);
+            }
+
+            return Position.Early;
         }
     }
 }
