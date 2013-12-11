@@ -16,6 +16,8 @@ namespace common
 
     public class Board
     {
+        private Street street;
+
         public int Dealer { get; set; }
         public List<Card> Cards { get; set; }
         public List<Player> Players { get; set; }
@@ -36,7 +38,18 @@ namespace common
                         return Street.River;
                 }
             }
-            set;
+            set
+            {
+                this.street = value;
+            }
+        }
+
+        public Board(int dealer, List<Card> cards, List<Player> players, int bank)
+        {
+            this.Dealer = dealer;
+            this.Cards = cards;
+            this.Players = players;
+            this.Bank = bank;
         }
     }
 }
