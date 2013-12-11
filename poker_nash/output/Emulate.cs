@@ -48,6 +48,7 @@ namespace output
         private void Click(Point point)
         {
             Cursor.Position = point;
+            
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, new IntPtr());
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, new IntPtr());
         }

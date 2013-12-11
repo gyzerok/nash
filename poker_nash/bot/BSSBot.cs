@@ -22,13 +22,15 @@ namespace bot
             string line;
             while ((line = sr.ReadLine()) != null)
             {
-                var actions = new List<List<int>>();
+                var actions = new List<int>();
+                var subTable = new List<List<int>>();
                 string tmpLine;
                 for (int i = 0; i < 3; i++)
                 {
                     tmpLine = sr.ReadLine();
-                    //actions = tmpLine.Split(' ').Select(n => int.Parse(n)).ToList();
-                    this.preflopTable.Add(line.Split(' ').ToList(), actions);
+                    actions = tmpLine.Split(' ').Select(n => int.Parse(n)).ToList();
+                    subTable.Add(actions);
+                    this.preflopTable.Add(line.Split(' ').ToList(), subTable);
                 }
             }
 
