@@ -20,6 +20,23 @@ namespace common
         public List<Card> Cards { get; set; }
         public List<Player> Players { get; set; }
         public int Bank { get; set; }
-        public Street Street { get; set; }
+        public Street Street 
+        { 
+            get
+            {
+                switch (this.Cards.Count)
+                {
+                    case 0:
+                        return Street.Preflop;
+                    case 3:
+                        return Street.Flop;
+                    case 4:
+                        return Street.Turn;
+                    default:
+                        return Street.River;
+                }
+            }
+            set;
+        }
     }
 }

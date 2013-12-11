@@ -14,20 +14,21 @@ namespace common
         Raise,
         Call,
         Call20,
+        Unknown,
     }
 
     public class Activity
     {
-        private int bet;
+        private double bet;
 
-        public Activity(Decision decision, int bet = 0)
+        public Activity(Decision decision, double bet = 0)
         {
             this.Type = decision;
             this.Bet = bet;
         }
 
         public Decision Type { get; private set; }
-        public int Bet 
+        public double Bet 
         {
             get
             {

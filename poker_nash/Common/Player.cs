@@ -31,5 +31,11 @@ namespace common
     {
         public int Bank { get; set; }
         public Activity Activity { get; set; }
+
+        public Player(Activity activity)
+        {
+            this.Activity = activity;
+            this.Bank = 0;
+        }
     }
 }

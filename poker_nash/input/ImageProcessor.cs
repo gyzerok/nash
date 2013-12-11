@@ -9,37 +9,52 @@ using System.Windows.Forms;
 
 namespace input
 {
-    public class ImageProcessor
+    public static class ImageProcessor
     {
-        private List<Rectangle> dealerRects = new List<Rectangle>()
+        public static Bitmap Snapshot()
         {
-            new Rectangle(661,425,30,25),
-            new Rectangle(475,427,30,25),
-            new Rectangle(316,334,30,25),
-            new Rectangle(340,212,30,25),
-            new Rectangle(522,140,30,25),
-            new Rectangle(826,140,30,25),
-            new Rectangle(1002,213,30,25),
-            new Rectangle(1022,332,30,25),
-            new Rectangle(874,428,30,25),
-        };
-
-        private Bitmap image;
-
-        public ImageProcessor()
-        {
-            this.image = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            Bitmap image = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            Graphics g = Graphics.FromImage(image as Image);
+            g.CopyFromScreen(0,0,0,0,image.Size);
+            return image;
         }
 
-        public void Snapshot()
+        public static Bitmap Crop(Bitmap source, Rectangle rect)
         {
-            Graphics g = Graphics.FromImage(this.image as Image);
-            g.CopyFromScreen(0,0,0,0,this.image.Size);
+            return source.Clone(rect, PixelFormat.DontCare);
         }
 
-        public Bitmap PrintScreen(Rectangle rect)
+        public static Bitmap DetectBet(Bitmap image)
         {
-            return image.Clone(rect, PixelFormat.DontCare);
+            int minX, maxX, minY, maxY;
+            minX = image.Width;
+            maxX = 0;
+            minY = image.Height;
+            maxY = 0;
+            for (int i = 0; i < image.Height; i++)
+            {
+                for (int j = 0; j < image.Width; j++)
+                {
+                    if (image.GetPixel(j, i) == Color.FromArgb(255, 255, 246, 207))
+                    {
+                        minX = Math.Min(minX, j);
+                        maxX = Math.Max(maxX, j);
+                        minY = Math.Min(minY, i);
+                        maxY = Math.Max(maxY, i);
+                        //image.SetPixel(i, j, Color.Black);
+                    }
+                }
+            }
+            if (minX < maxX)
+            {
+                minX--;
+                minY--;
+                maxY += 2;
+                maxX += 2;
+                return image.Clone(new Rectangle(minX, minY, maxX - minX, maxY - minY), PixelFormat.DontCare);
+            }
+            return null;
         }
+
     }
 }

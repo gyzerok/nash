@@ -14,33 +14,34 @@ namespace input
     public class Capture : IInput
     {
         private Bitmap imageState;
+        private int dealerPos;
         private Dictionary<string, string> cards = new Dictionary<string, string>();
-        private List<Point> cardsCoords = new List<Point>()
+        private List<Player> players = new List<Player>();
+
+        private List<Rectangle> betsRects = new List<Rectangle>()
         {
-            new Point(417,400),
-            new Point(330,308),
-            new Point(424,193),
-            new Point(503,160),
-            new Point(877,169),
-            new Point(957,195),
-            new Point(1050,309),
-            new Point(944,408),
+            new Rectangle(614,391,80,20),
+            new Rectangle(455,400,80,20),
+            new Rectangle(379,316,80,20),
+            new Rectangle(402,230,80,20),
+            new Rectangle(527,194,80,20),
+            new Rectangle(749,190,80,20),
+            new Rectangle(831,234,80,20),
+            new Rectangle(877,307,80,20),
+            new Rectangle(763,395,80,20),
         };
 
-        private List<Point> dealerCoords = new List<Point>()
+        private List<Rectangle> handsRects = new List<Rectangle>()
         {
-            new Point(672,434),
-            new Point(484,436),
-            new Point(325,344),
-            new Point(351,220),
-            new Point(534,148),
-            new Point(838,147),
-            new Point(1015,221),
-            new Point(1033,340),
-            new Point(886,436),
+            new Rectangle(398,379,30,30),
+            new Rectangle(310,286,30,30),
+            new Rectangle(406,174,30,30),
+            new Rectangle(484,140,30,30),
+            new Rectangle(858,138,30,30),
+            new Rectangle(937,174,30,30),
+            new Rectangle(1029,288,30,30),
+            new Rectangle(923,380,30,30),
         };
-        private List<Point> handsCoords = new List<Point>();
-        private int dealerPos;
 
         private List<Rectangle> dealerRects = new List<Rectangle>()
         {
@@ -57,7 +58,9 @@ namespace input
 
         public State GetState()
         {
+            this.imageState = ImageProcessor.Snapshot();
             Dealer();
+            Bets();
             return null;
         }
 
@@ -97,25 +100,41 @@ namespace input
         //Method that recognizes bank and bets on table
         private void Bets()
         {
-            
+            Rectangle value;
+            Bitmap targetBitmap;
+            double recognizedValue;
+            for (int i = 0; i < betsRects.Count; i++)
+            {
+                value = betsRects[i];
+                
+                targetBitmap = ImageProcessor.Crop(imageState, value);
+                targetBitmap = ImageProcessor.DetectBet(targetBitmap);
+                if (targetBitmap != null)
+                {
+                    recognizedValue = DigitOcr.Recognize(targetBitmap);
+                    this.players.Add(new Player(new Activity(Decision.Unknown, recognizedValue)));
+                }
+            }
         }
 
         //Method that detects dealer on the table
         private void Dealer()
         {
             Rectangle value;
+            Bitmap targetBitmap;
             Color dealerColor = Color.FromArgb(255, 169, 23, 13);
-
+            bool flag = false;
             for (int i = 0; i < dealerRects.Count; i++)
             {
                 value = dealerRects[i];
+                targetBitmap = ImageProcessor.Crop(imageState, value);
                 for (int j = 0; j < value.Width; j++)
                 {
                     for (int k = 0; k < value.Height; k++)
                     {
-                        if (ImageProcessor.PrintScreen(value).GetPixel(j, k) == dealerColor)
+                        if (targetBitmap.GetPixel(j, k) == dealerColor)
                         {
-                            dealer = i;
+                            dealerPos = i;
                             flag = true;
                             break;
                         }
@@ -126,63 +145,14 @@ namespace input
             }
         }
 
-        private void GetDealer()
-        {
-            Rectangle value;
-            bool flag = false;
-            aPlacer.Snapshot();
-            
-            label4.Text = dealer.ToString();
-        }
-
         private int NumberOfPlayersAfter(int dealerPos)
         {
             int result = 0;
             Point value;
             Color handColor = Color.FromArgb(255, 247, 219, 219);
-            for (int i = 1; i < dealerPos; i++)
-            {
-                value = handsCoords[i];
-                if (imageState.GetPixel(value.X, value.Y) == handColor)
-                {
-                    result++;
-                }
-            }
             return result;
         }
 
-        private Bitmap DetectBet(Bitmap image)
-        {
-            int minX, maxX, minY, maxY;
-            minX = image.Width;
-            maxX = 0;
-            minY = image.Height;
-            maxY = 0;
-            for (int i = 0; i < image.Height; i++)
-            {
-                for (int j = 0; j < image.Width; j++)
-                {
-                    if (image.GetPixel(j, i) == Color.FromArgb(255, 255, 246, 207))
-                    {
-                        minX = Math.Min(minX, j);
-                        maxX = Math.Max(maxX, j);
-                        minY = Math.Min(minY, i);
-                        maxY = Math.Max(maxY, i);
-                        //image.SetPixel(i, j, Color.Black);
-                    }
-                }
-            }
-            if (minX < maxX)
-            {
-                minX--;
-                minY--;
-                maxY += 2;
-                maxX += 2;
-                return image.Clone(new Rectangle(minX, minY, maxX - minX, maxY - minY), PixelFormat.DontCare);
-            }
-            return image;
-        }
-        
         //public Rectangle rect = new Rectangle(650, 460, 15, 40);
         //public Rectangle rect2 = new Rectangle(671, 465, 15, 40);
         //public Rectangle flopRect1 = new Rectangle(533, 227, 15, 40);
