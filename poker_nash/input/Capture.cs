@@ -74,7 +74,7 @@ namespace input
 
         public State GetState()
         {
-            LoadConfig();
+            this.LoadConfig();
             this.imageState = ImageProcessor.Snapshot();
             Dealer();
             Bets();
@@ -88,7 +88,7 @@ namespace input
         private void LoadConfig()
         {
             var result = new Dictionary<string, string>();
-            using (FileStream fs = File.OpenRead("cards.cfg"))
+            using (FileStream fs = File.OpenRead(@"C:\Users\Джордж\Documents\Visual Studio 2012\Projects\nash\poker_nash\cards.cfg"))
             using (BinaryReader reader = new BinaryReader(fs))
             {
                 // Get count.
@@ -108,8 +108,7 @@ namespace input
         public bool Ready()
         {
             imageState = ImageProcessor.Snapshot();
-            Bitmap targetBitmap = ImageProcessor.Crop(imageState, new Rectangle(readyPos,new Size(1,1)));
-            if (targetBitmap.GetPixel(0, 0) == readyPixel)
+            if (imageState.GetPixel(729, 672) == readyPixel)
             {
                 return true;
             }

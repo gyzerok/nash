@@ -18,7 +18,7 @@ namespace bot
         public BSSBot()
         {
             var sr = new StreamReader(@"C:\Users\Джордж\Documents\Visual Studio 2012\Projects\nash\poker_nash\bot\bin\Debug\preflop_table.txt");
-
+            preflopTable = new Dictionary<List<string>, List<List<int>>>();
             string line;
             while ((line = sr.ReadLine()) != null)
             {
