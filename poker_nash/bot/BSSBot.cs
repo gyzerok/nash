@@ -45,6 +45,9 @@ namespace bot
             {
                 var subTable = this.GetSubtable();
 
+                if (subTable == null)
+                    return new Activity(Decision.Fold);
+
                 var decision = this.GetDecision();
 
                 int i = 0;
@@ -75,14 +78,22 @@ namespace bot
         {
             string hand = this.state.Hand.ToString();
 
-            return this.preflopTable.Select(n => (n.Key.Contains(hand)) ? n.Value : null).ElementAt(0);
+            foreach (var element in preflopTable)
+            {
+                if (element.Key.Contains(hand))
+                {
+                    return element.Value;
+                }
+            }
+
+            return null;
         }
 
         private Decision GetDecision()
         {
             var decision = Decision.Fold;
 
-            for (int i = this.state.Board.Players.Count; i > 1; i++)
+            for (int i = this.state.Board.Players.Count-1; i > 0; i--)
             {
                 if (this.state.Board.Players[i].Activity.Bet > 0.02)
                 {

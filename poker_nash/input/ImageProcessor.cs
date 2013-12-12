@@ -27,9 +27,9 @@ namespace input
         public static Bitmap DetectBet(Bitmap image)
         {
             int minX, maxX, minY, maxY;
-            minX = image.Width;
+            minX = image.Width-1;
             maxX = 0;
-            minY = image.Height;
+            minY = image.Height-1;
             maxY = 0;
             for (int i = 0; i < image.Height; i++)
             {

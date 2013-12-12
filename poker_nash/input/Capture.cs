@@ -36,15 +36,15 @@ namespace input
 
         private List<Rectangle> betsRects = new List<Rectangle>()
         {
-            new Rectangle(614,391,80,35),
-            new Rectangle(455,400,80,35),
-            new Rectangle(379,316,80,35),
-            new Rectangle(402,230,80,35),
-            new Rectangle(527,194,80,35),
-            new Rectangle(749,190,80,35),
-            new Rectangle(831,234,80,35),
-            new Rectangle(877,307,80,35),
-            new Rectangle(763,395,80,35),
+            new Rectangle(614,391,105,35),
+            new Rectangle(455,400,105,35),
+            new Rectangle(379,316,105,35),
+            new Rectangle(402,230,105,35),
+            new Rectangle(527,194,105,35),
+            new Rectangle(749,190,105,35),
+            new Rectangle(831,234,105,35),
+            new Rectangle(877,307,105,35),
+            new Rectangle(763,395,105,35),
         };
 
         private List<Rectangle> handsRects = new List<Rectangle>()
@@ -72,9 +72,13 @@ namespace input
             new Rectangle(874,428,30,25),
         };
 
-        public State GetState()
+        public Capture()
         {
             this.LoadConfig();
+        }
+
+        public State GetState()
+        {
             this.imageState = ImageProcessor.Snapshot();
             Dealer();
             Bets();
@@ -160,7 +164,14 @@ namespace input
             value = betsRects[0];
             targetBitmap = ImageProcessor.Crop(imageState, value);
             targetBitmap = ImageProcessor.DetectBet(targetBitmap);
-            recognizedValue = DigitOcr.Recognize(targetBitmap);
+            if (targetBitmap != null)
+            {
+                recognizedValue = DigitOcr.Recognize(targetBitmap);
+            }
+            else
+            {
+                recognizedValue = 0;
+            }
             this.players.Add(new Player(new Activity(Decision.Unknown, recognizedValue), 0 == this.absoluteDealerPos));
             for (int i = 1; i < betsRects.Count; i++)
             {
@@ -179,12 +190,12 @@ namespace input
                     break;
                 }
                 targetBitmap = ImageProcessor.Crop(imageState, cardsRect);
-                for (int k = 0; k < value.Width; k++)
+                for (int k = 0; k < targetBitmap.Width; k++)
                 {
                     flag = false;
-                    for (int t = 0; t < value.Height; t++)
+                    for (int t = 0; t < targetBitmap.Height; t++)
                     {
-                        if (targetBitmap.GetPixel(k, t) == handPixel)
+                        if (targetBitmap.GetPixel(k,t) == handPixel)
                         {
                             if (this.absoluteDealerPos == i)
                             {

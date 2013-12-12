@@ -24,12 +24,14 @@ namespace output
 
         public void Act(Activity activity)
         {
+            if (activity == null) return;
+
             int x, y;
             switch (activity.Type)
             {
                 case Decision.Fold:
                     x = this.rnd.Next(722, 806);
-                    y = this.rnd.Next(663, 790);
+                    y = this.rnd.Next(663, 702);
                     this.Click(new Point(x, y));
                     break;
                 case Decision.Call:
@@ -51,6 +53,8 @@ namespace output
             
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, new IntPtr());
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, new IntPtr());
+
+            Cursor.Position = new Point(0, 0);
         }
 
         [DllImport("user32.dll")]

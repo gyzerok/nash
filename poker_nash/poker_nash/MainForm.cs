@@ -46,7 +46,7 @@ namespace poker_nash
             var output = new Emulate();
             var bot = new BSSBot();
 
-            var manager = new Manager(input, output, bot);
+            var manager = new Manager(input, output, bot, this);
             manager.Run();
         }
     }
